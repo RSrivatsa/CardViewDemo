@@ -5,7 +5,7 @@ package info.androidhive.cardview;
  */
 public class Album {
     private String name;
-    private int numOfSongs;
+    private int price;
     private int thumbnail;
 
     public Album() {
@@ -13,7 +13,7 @@ public class Album {
 
     public Album(String name, int numOfSongs, int thumbnail) {
         this.name = name;
-        this.numOfSongs = numOfSongs;
+        this.price = numOfSongs;
         this.thumbnail = thumbnail;
     }
 
@@ -26,11 +26,11 @@ public class Album {
     }
 
     public int getNumOfSongs() {
-        return numOfSongs;
+        return price;
     }
 
     public void setNumOfSongs(int numOfSongs) {
-        this.numOfSongs = numOfSongs;
+        this.price = numOfSongs;
     }
 
     public int getThumbnail() {
