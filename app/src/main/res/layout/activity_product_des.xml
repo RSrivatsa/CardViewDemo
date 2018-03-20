@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="info.androidhive.cardview.ProductDes">
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Upload Your Product Here"
+        android:textColor="#000"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="111dp"
+        tools:layout_editor_absoluteY="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textView6"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:layout_marginTop="10dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rel_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageButton2"
+        android:layout_margin="20dp">
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_below="@+id/editText3"
+            android:ems="10"
+            android:inputType="number"
+            android:hint="Price"
+            android:paddingLeft="20dp"/>
+
+        <EditText
+            android:id="@+id/editText6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_below="@+id/editText4"
+            android:ems="10"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:paddingLeft="20dp"/>
+
+        <EditText
+            android:id="@+id/editText7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_below="@+id/editText6"
+            android:ems="10"
+            android:hint="Location"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"/>
+
+        <EditText
+            android:id="@+id/editText8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_below="@+id/editText7"
+            android:ems="10"
+            android:hint="Mobile"
+            android:inputType="number"
+            android:paddingLeft="20dp"/>
+    </RelativeLayout>
+    <RadioGroup
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_below="@+id/rel_layout"
+        android:id="@+id/category_RG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/rb_electronics"
+            android:text="Electronics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/rb_smartphone"
+            android:layout_marginLeft="20dp"
+            android:text="Smartphones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+    <Button
+        android:id="@+id/button"
+        android:onClick="uploadToServer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/category_RG"
+        android:layout_centerHorizontal="true"
+        android:text="Upload" />
+</RelativeLayout>
+

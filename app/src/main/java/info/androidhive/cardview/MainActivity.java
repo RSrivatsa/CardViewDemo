@@ -1,5 +1,7 @@
 package info.androidhive.cardview;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,34 +12,51 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
     private List<Album> albumList;
-
+    RequestQueue queue;
+    String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        category=getIntent().getStringExtra("Category");
         initCollapsingToolbar();
-
+        queue= Volley.newRequestQueue(MainActivity.this);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, albumList);
+
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -45,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareAlbums();
-
+        //prepareAlbums();
+        loadRecyclerview(queue);
         try {
             Glide.with(this).load(R.drawable.coverpic).into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
@@ -89,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Adding few albums for testing
      */
+    /*
     private void prepareAlbums() {
         int[] covers = new int[]{
                 R.drawable.one,
@@ -136,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
-
+    */
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -181,5 +201,67 @@ public class MainActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    String url="http://lotusworks.16mb.com/DAcredentials.php";
+    public void loadRecyclerview(RequestQueue requestQueue){
+        final ProgressDialog dialog=new ProgressDialog(MainActivity.this);
+        dialog.setMessage("Loading data");
+        dialog.show();
+        JSONObject obj=new JSONObject();
+        try {
+            obj.put("Category",category);
+            obj.put("Series","s2e1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url="http://mrandroid.in/DAcredentials.php?Series=s2e1&Category="+category;
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(com.android.volley.Request.Method.GET,
+                url, obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response",response.toString());
+                        dialog.dismiss();
+                        try {
+                            JSONArray array=response.getJSONArray("Response");
+                            for (int i=0;i<array.length();i++){
+                                JSONObject o=array.getJSONObject(i);
+                                if(o.getString("result").equals("yes")) {
+                                    Log.d("Json", o.toString());
+                                    Album album = new Album(
+                                            o.getString("ItemID"),
+                                            o.getString("Username"),
+                                            o.getString("Description"),
+                                            o.getString("Mobile"),
+                                            o.getString("Location"),
+                                            o.getString("Price"),
+                                            o.getString("Category"));
+                                    albumList.add(album);
+                                    Log.d("Album List", albumList.toString());
+                                }else{
+                                    Toast.makeText(MainActivity.this, "No Product exist in this Category.", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                            adapter=new AlbumsAdapter(getApplicationContext(),albumList);
+                            adapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        Log.d("Json baby",jsonObjectRequest.toString());
+
+        requestQueue.add(jsonObjectRequest);
     }
 }

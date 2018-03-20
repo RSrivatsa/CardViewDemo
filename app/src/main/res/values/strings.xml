@@ -5,4 +5,8 @@
     <string name="action_play_next">Share</string>
     <string name="backdrop_title">Rent Products</string>
     <string name="backdrop_subtitle">Rent more, Save More!</string>
+
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
