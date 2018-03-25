@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareAlbums();
+       /* prepareAlbums();
 
-        try {
+   */     try {
             Glide.with(this).load(R.drawable.coverpic).into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Adding few albums for testing
      */
-    private void prepareAlbums() {
+    /*private void prepareAlbums() {
         int[] covers = new int[]{
                 R.drawable.one,
                 R.drawable.nokia8,
